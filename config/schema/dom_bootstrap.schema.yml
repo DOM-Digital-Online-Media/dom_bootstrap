@@ -1,0 +1,32 @@
+block.settings.dom_bootstrap_collapsible_menu:
+  type: block_settings
+  label: 'Collapsible menu block'
+  mapping:
+    menu_name:
+      type: string
+      label: Menu name
+
+block.settings.dom_bootstrap_text_logo:
+  type: block_settings
+  label: 'Text Logo block'
+  mapping:
+    bold:
+      type: string
+      label: Bold part
+    thin:
+      type: string
+      label: Thin part
+    include_mobile:
+      type: boolean
+      label: Include home icon for mobile
+
+block.settings.dom_bootstrap_tabs:
+  type: block_settings
+  label: 'Collapsible tabs block'
+  mapping:
+    primary:
+      type: boolean
+      label: Show primary tabs
+    secondary:
+      type: boolean
+      label: Show secondary tabs

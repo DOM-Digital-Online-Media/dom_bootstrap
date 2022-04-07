@@ -1,0 +1,97 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for DOM bootstrap module.
+ */
+
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Render\Element;
+
+/**
+ * Implements hook_theme().
+ */
+function dom_bootstrap_theme($existing, $type, $theme, $path) {
+  return [
+    'navs' => [
+      'variables' => [
+        'items' => NULL,
+      ],
+    ],
+    'horizontal_tabs' => [
+      'variables' => [
+        'items' => NULL,
+        'tab_display' => 'tabs',
+        'instance_id' => NULL,
+      ],
+    ],
+    'dropdown' => [
+      'variables' => [
+        'id' => NULL,
+        'button' => NULL,
+        'button_img' => NULL,
+        'button_class' => '',
+        'links' => [],
+      ],
+    ],
+    'bootstrap_icon' => [
+      'variables' => [
+        'icon' => '',
+        'content' => '',
+        'attributes' => [],
+      ],
+    ],
+    'collapsible_links' => [
+      'variables' => [
+        'title' => NULL,
+        'title_url' => NULL,
+        'icons' => [
+          [
+            '#theme' => 'bootstrap_icon',
+            '#icon' => 'arrow-down-short',
+            '#attributes' => ['class' => ['h6']],
+          ],
+          [
+            '#theme' => 'bootstrap_icon',
+            '#icon' => 'arrow-up-short',
+            '#attributes' => ['class' => ['h6']],
+          ],
+        ],
+        'links' => [],
+        'mobile_column' => 0,
+        'collapsed' => FALSE,
+        'active' => FALSE,
+        'id' => 'collapsible-menu',
+        'attributes' => [],
+        'title_attributes' => [],
+        'content_attributes' => [],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_dropdown().
+ */
+function dom_bootstrap_preprocess_dropdown(&$variables) {
+  foreach ($variables['links'] as &$link) {
+    $link['#attributes']['class'][] = 'dropdown-item';
+  }
+}
+
+/**
+ * Implements hook_preprocess_collapsible_links().
+ */
+function dom_bootstrap_preprocess_collapsible_links(&$variables) {
+  $variables['id'] = Html::getUniqueId($variables['id']);
+
+  // Since we break links in chunks in twig template we need to filter out
+  // links that are not visible to make chunks even and without empty spaces.
+  $visible = Element::getVisibleChildren($variables['links']);
+  $variables['links'] = array_intersect_key($variables['links'], array_flip($visible));
+
+  // Since we output links individually in twig template we need to sort
+  // them manually as array of links is not going to renderer.
+  Element::children($variables['links'], TRUE);
+  unset($variables['links']['#sorted']);
+}

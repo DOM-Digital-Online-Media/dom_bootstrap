@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Theme implementation for the bootsrtap icon.
+ *
+ * Available variables:
+ * - icon: icon name;
+ * - attributes: icon html attributes;
+ *
+ * @ingroup themeable
+ */
+#}
+
+{% if attributes.aria-hidden is not defined %}
+  {% set attributes = attributes.setAttribute('aria-hidden', 'true') %}
+{% endif %}
+<i {{ attributes.addClass('bi-' ~ icon) }}>
+  {% if content %}
+    {{ content }}
+  {% endif %}
+</i>

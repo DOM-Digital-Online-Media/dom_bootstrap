@@ -1,0 +1,6 @@
+name: DOM bootstrap
+type: module
+description: Defines bootstrap 5 components as Drupal theme elements.
+package: DOM
+core: 8.x
+core_version_requirement: ^8 || ^9

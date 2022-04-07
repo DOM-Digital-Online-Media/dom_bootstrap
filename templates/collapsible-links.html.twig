@@ -1,0 +1,92 @@
+{#
+/**
+ * @file
+ * Theme implementation for the bootsrtap collapsible element for links.
+ *
+ * Available variables:
+ * - title: header title;
+ * - title_url: header title link, does not print children and makes header clickable;
+ * - icons: array of icons to print in header;
+ * - links: array of links;
+ * - mobile_column: number of items per column for mobile;
+ * - collapsed: boolean indicating whether to appear collapsed;
+ * - active: boolean indicating if collapsible element is active;
+ * - id: unique html id for collapsible body;
+ * - attributes: html attributes for collapsible wrapper;
+ * - title_attributes: html attributes for collapsible header;
+ * - content_attributes: html attributes for collapsible content;
+ *
+ * @ingroup themeable
+ */
+#}
+
+{# Set head and content classes based on configuration. #}
+{% set head_classes = ['collapse-head', 'rounded-top', 'd-flex', 'justify-content-between', 'align-items-center'] %}
+{% set content_classes = ['collapse-body', 'rounded-bottom', 'border'] %}
+{% set expanded = 'true' %}
+
+{% if active %}
+  {% set head_classes = head_classes|merge(['active']) %}
+{% endif %}
+
+{% if collapsed %}
+  {% set expanded = 'false' %}
+  {% set content_classes = content_classes|merge(['collapse']) %}
+  {% set head_classes = head_classes|merge(['collapsed']) %}
+{% else %}
+  {% set content_classes = content_classes|merge(['collapse', 'show']) %}
+{% endif %}
+
+{# Set attributes if only header title should be shown as link #}
+{% if title_url %}
+  {% set title_attributes = title_attributes.setAttribute('href', title_url) %}
+  {% set head_classes = head_classes|merge(['collapsed']) %}
+{% else %}
+  {% set title_attributes = title_attributes.setAttribute('href', '#' ~ id).setAttribute('data-bs-toggle', 'collapse').setAttribute('aria-expanded', expanded).setAttribute('role', 'button') %}
+{% endif %}
+
+{% if links|length > 0 or title_url %}
+  <div {{ attributes.addClass('collapsible-links collapse-box') }}>
+    <a {{ title_attributes.addClass(head_classes) }}>
+      <h2 class="h6 text-uppercase">{{ title }}</h2>
+      {% for icon in icons %}
+        {{ icon }}
+      {% endfor %}
+    </a>
+    {% if not title_url %}
+      <div {{ content_attributes.addClass(content_classes).setAttribute('id', id) }}>
+        {% if mobile_column > 0 and links|length > mobile_column %}
+          <div class="row">
+            {% for item in links %}
+              {% if loop.index0 % mobile_column == 0 %}
+                <div class="col-sm-6 col-md-12">
+                  <ul class="list-unstyled m-0">
+              {% endif %}
+
+              {% if '</li>' in render_var(item) %}
+                {{ item }}
+              {% else %}
+                <li>{{ item }}</li>
+              {% endif %}
+
+              {% if (loop.index0 + 1) % mobile_column == 0 %}
+                  </ul>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% else %}
+          <ul class="list-unstyled m-0">
+            {% for item in links %}
+              {% if '</li>' in render_var(item) %}
+                {{ item }}
+              {% else %}
+                <li>{{ item }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

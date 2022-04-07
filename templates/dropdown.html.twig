@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Theme implementation for the bootsrtap dropdown.
+ *
+ * Available variables:
+ * - id: dropdown id;
+ * - button: dropdown button content;
+ * - button_img: image to place in dropdown button;
+ * - button_class: additional class for dropdown button;
+ * - links: array of links for dropdown menu;
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="dropdown">
+  <button class="btn dropdown-toggle {{ button_class }}" type="button" id="{{ id }}" data-bs-toggle="dropdown" aria-expanded="false">
+    {{ button_img }}{{ button }}
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="{{ id }}">
+    {% for link in links %}
+      <li>{{ link }}</li>
+    {% endfor %}
+  </ul>
+</div>

@@ -1,0 +1,18 @@
+{#
+/**
+ * @file
+ * Theme implementation for the bootsrtap navs.
+ *
+ * Available variables:
+ * - items: array of items for navigation.
+ *
+ * @ingroup themeable
+ */
+#}
+<ul class="nav">
+  {% for item in items %}
+    <li {{ create_attribute(item['#attributes']) }}>
+        {{ item.content }}
+     </li>
+  {% endfor %}
+</ul>
