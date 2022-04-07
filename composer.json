@@ -1,5 +1,5 @@
 {
-    "name": "drupal/dom_bootstrap",
+    "name": "dom-digital-online-media/dom_bootstrap",
     "description": "Defines bootstrap 5 components as Drupal theme elements.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
