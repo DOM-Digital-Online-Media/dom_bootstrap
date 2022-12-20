@@ -91,7 +91,9 @@ function dom_bootstrap_theme_suggestions_dom_bootstrap_form(array $variables) {
  * Implements hook_form_alter().
  */
 function dom_bootstrap_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $form['#theme'] = 'dom_bootstrap_form';
+  if ('views_exposed_form' != $form_id) {
+    $form['#theme'] = 'dom_bootstrap_form';
+  }
 }
 
 /**
