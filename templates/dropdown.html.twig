@@ -14,12 +14,16 @@
  */
 #}
 <div class="dropdown">
-  <button class="btn dropdown-toggle {{ button_class }}" type="button" id="{{ id }}" data-bs-toggle="dropdown" aria-expanded="false">
-    {{ button_img }}{{ button }}
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="{{ id }}">
-    {% for link in links %}
-      <li>{{ link }}</li>
-    {% endfor %}
-  </ul>
+  {% if links %}
+    <button class="btn dropdown-toggle {{ button_class }}" type="button" id="{{ id }}" data-bs-toggle="dropdown" aria-expanded="false">
+      {{ button_img }}{{ button }}
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="{{ id }}">
+      {% for link in links %}
+        <li>{{ link }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <h4 class="btn disabled {{ button_class }}">{{ button }}</h4>
+  {% endif %}
 </div>
