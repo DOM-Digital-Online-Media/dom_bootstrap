@@ -150,7 +150,7 @@ class CollapsibleMenuBlock extends BlockBase implements ContainerFactoryPluginIn
         '#title_url' => $item['url']->toString(),
         '#title_attributes' => $item['attributes']->toArray(),
         '#active' => $item['in_active_trail'],
-        '#collapsed' => !($item['in_active_trail'] || (isset($item['is_expanded']) && $item['is_expanded'])),
+        '#collapsed' => !($item['in_active_trail'] || $item['original_link']->isExpanded()),
       ];
       if (!empty($item['below'])) {
         unset($build[$name]['#title_url']);
