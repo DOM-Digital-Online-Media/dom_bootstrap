@@ -170,8 +170,16 @@ class CollapsibleMenuBlock extends BlockBase implements ContainerFactoryPluginIn
       if (!empty($item['below'])) {
         unset($build[$name]['#title_url']);
         foreach ($item['below'] as $child_name => $child) {
-          $build[$name]['#links'][$child_name] = Link::fromTextAndUrl($child['title'], $child['url'])->toRenderable();
-          $build[$name]['#links'][$child_name]['#attributes'] = $child['attributes']->toArray();
+          if (isset($child['put_delimiter'])) {
+            $build[$name]['#links'][$child_name] = [
+              '#type' => 'html_tag',
+              '#tag' => 'hr',
+            ];
+          }
+          else {
+            $build[$name]['#links'][$child_name] = Link::fromTextAndUrl($child['title'], $child['url'])->toRenderable();
+            $build[$name]['#links'][$child_name]['#attributes'] = $child['attributes']->toArray();
+          }
         }
       }
       else {
