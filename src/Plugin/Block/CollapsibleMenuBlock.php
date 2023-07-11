@@ -5,6 +5,7 @@ namespace Drupal\dom_bootstrap\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Menu\MenuActiveTrailInterface;
@@ -46,6 +47,13 @@ class CollapsibleMenuBlock extends BlockBase implements ContainerFactoryPluginIn
   protected $menuActiveTrail;
 
   /**
+   * Module handler service.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
    * Constructs a new CollapsibleMenuBlock instance.
    *
    * @param array $configuration
@@ -63,12 +71,15 @@ class CollapsibleMenuBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The menu link tree service.
    * @param \Drupal\Core\Menu\MenuActiveTrailInterface $menu_active_trail
    *   The active menu trail service.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   Module handler service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, MenuLinkTreeInterface $menu_link_tree, MenuActiveTrailInterface $menu_active_trail) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, MenuLinkTreeInterface $menu_link_tree, MenuActiveTrailInterface $menu_active_trail, ModuleHandlerInterface $module_handler) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entity_type_manager;
     $this->menuTree = $menu_link_tree;
     $this->menuActiveTrail = $menu_active_trail;
+    $this->moduleHandler = $module_handler;
   }
 
   /**
@@ -81,7 +92,8 @@ class CollapsibleMenuBlock extends BlockBase implements ContainerFactoryPluginIn
       $plugin_definition,
       $container->get('entity_type.manager'),
       $container->get('menu.link_tree'),
-      $container->get('menu.active_trail')
+      $container->get('menu.active_trail'),
+      $container->get('module_handler')
     );
   }
 
@@ -140,6 +152,9 @@ class CollapsibleMenuBlock extends BlockBase implements ContainerFactoryPluginIn
     ];
     $tree = $this->menuTree->transform($tree, $manipulators);
     $original_build = $this->menuTree->build($tree);
+
+    $this->moduleHandler->alter('collapsible_menu', $original_build);
+
     $build = [
       '#cache' => $original_build['#cache'],
     ];
