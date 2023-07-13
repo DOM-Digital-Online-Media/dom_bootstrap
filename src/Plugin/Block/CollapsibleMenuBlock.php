@@ -153,7 +153,7 @@ class CollapsibleMenuBlock extends BlockBase implements ContainerFactoryPluginIn
     $tree = $this->menuTree->transform($tree, $manipulators);
     $original_build = $this->menuTree->build($tree);
 
-    $this->moduleHandler->alter('collapsible_menu', $original_build);
+    $this->moduleHandler->alter('dom_bootstrap_collapsible_menu', $original_build);
 
     $build = [
       '#cache' => $original_build['#cache'],
